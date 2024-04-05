@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
-OPENCV_URL=${1:-"$OPENCV_URL"}
 OPENCV_DEB=${2:-"$OPENCV_DEB"}
 
-echo "OPENCV_URL=$OPENCV_URL"
 echo "OPENCV_DEB=$OPENCV_DEB"
 
-if [[ -z ${OPENCV_URL} || -z ${OPENCV_DEB} ]]; then
+if [[ -z ${OPENCV_DEB} ]]; then
 	echo "OPENCV_URL and OPENCV_DEB must be set as environment variables or as command-line arguments"
 	exit 255
 fi
@@ -29,9 +27,10 @@ set -e
 apt-get purge -y '.*opencv.*' || echo "previous OpenCV installation not found"
 
 # download and extract the deb packages
-mkdir opencv
+#mkdir opencv
 cd opencv
-wget --quiet --show-progress --progress=bar:force:noscroll --no-check-certificate ${OPENCV_URL} -O ${OPENCV_DEB}
+#wget --quiet --show-progress --progress=bar:force:noscroll --no-check-certificate ${OPENCV_URL} -O ${OPENCV_DEB}
+pwd
 tar -xzvf ${OPENCV_DEB}
 
 # install the packages and their dependencies
@@ -78,4 +77,5 @@ fi
 
 # test importing cv2
 echo "testing cv2 module under python..."
+export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libgomp.so.1
 python3 -c "import cv2; print('OpenCV version:', str(cv2.__version__)); print(cv2.getBuildInformation())"

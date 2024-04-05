@@ -9,16 +9,13 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
-ARG OPENCV_URL \
-    OPENCV_DEB
+ARG OPENCV_DEB
+RUN mkdir /opencv
+COPY OpenCV-4.5.0-aarch64.tar /opencv/OpenCV-4.5.0-aarch64.tar
 
 COPY opencv_install.sh /opt/opencv_install.sh
 
 # leave the installer script under /opt and patch it with the
 # build args hardcoded in case it needs re-installed later
-RUN set -ex \
-    && sed -i \
-        -e '2i OPENCV_URL=${OPENCV_URL}' \
-        -e '3i OPENCV_DEB=${OPENCV_DEB}' \
-        /opt/opencv_install.sh \
-    && /opt/opencv_install.sh
+RUN /opt/opencv_install.sh
+RUN echo 'export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libgomp.so.1' >> ~/.bashrc

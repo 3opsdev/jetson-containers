@@ -72,7 +72,7 @@ RUN cd opencv && \
         -D WITH_CUDNN=ON \
         -D WITH_GSTREAMER=ON \
         -D WITH_LIBV4L=ON \
-	   -D WITH_GTK=ON \
+	   -D WITH_GTK=OFF \
         -D WITH_OPENGL=${ENABLE_OPENGL} \
 	   -D WITH_OPENCL=OFF \
 	   -D WITH_IPP=OFF \
@@ -80,6 +80,7 @@ RUN cd opencv && \
 	   -D BUILD_TIFF=ON \
 	   -D BUILD_PERF_TESTS=OFF \
 	   -D BUILD_TESTS=OFF \
+           -D WITH_QT=ON \
 	   ../
 	   
 RUN cd opencv/build && make -j$(nproc)
